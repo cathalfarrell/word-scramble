@@ -31,6 +31,12 @@ struct ContentView: View {
                     Text($0)
                 }
             }
+            /* Challenge 2
+                 Add a left bar button item that calls startGame(), so users can restart with a new word whenever they want to
+            */
+            .navigationBarItems(leading: Button(action: startGame){
+                    Text("New Word")
+            })
             .navigationBarTitle(rootWord)
             .onAppear(perform: startGame)
             .alert(isPresented: $showingError){
