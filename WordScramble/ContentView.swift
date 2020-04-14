@@ -75,11 +75,17 @@ struct ContentView: View {
         return true
     }
 
+    /*
+     Challenge 1 - Disallow answers that are shorter than three letters or are just our start word. For the three-letter check, the easiest thing to do is put a check into isReal() that returns false if the word length is under three letters. For the second part, just compare the start word against their input word and return false if they are the same.
+     */
+
     func isReal(word: String) -> Bool {
         let checker = UITextChecker()
         let range = NSRange(location: 0, length: word.utf16.count)
         let missSpelledRange = checker.rangeOfMisspelledWord(in: word, range: range, startingAt: 0, wrap: false, language: "en")
-        return missSpelledRange.location == NSNotFound
+        let realWord = missSpelledRange.location == NSNotFound
+        let validWord = word.count > 2 && word != rootWord
+        return realWord && validWord
     }
 
     func wordError(title: String, message: String) {
@@ -109,7 +115,7 @@ struct ContentView: View {
         }
 
         guard isReal(word: answer) else {
-            wordError(title: "Word doesnt look like a real word", message: "Please check the spelling")
+            wordError(title: "This word isn't a valid word", message: "You can't use the word provided, or a word that is less than 3 letters. And it must be a real word too.")
             return
         }
 
