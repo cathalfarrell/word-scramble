@@ -18,6 +18,14 @@ struct ContentView: View {
     @State private var errorMessage = ""
     @State private var showingError = false
 
+    private var calculatedScore: Int {
+        var score = 0
+        for word in usedWords {
+            score += word.count
+        }
+        return score
+    }
+
     var body: some View {
         NavigationView {
             VStack {
@@ -30,6 +38,12 @@ struct ContentView: View {
                     Image(systemName: "\($0.count).circle")
                     Text($0)
                 }
+                /* Challenge 3
+                 Put a text view below the List so you can track and show the player’s score for a given root word. How you calculate score is down to you, but something involving number of words and their letter count would be reasonable.
+                 */
+                 Text("Your score is: \(calculatedScore)")
+                    .font(.headline)
+
             }
             /* Challenge 2
                  Add a left bar button item that calls startGame(), so users can restart with a new word whenever they want to
@@ -50,6 +64,7 @@ struct ContentView: View {
 
             if let startWords = try? String.init(contentsOf: startWordsURL) {
                 let allWords = startWords.components(separatedBy: "\n")
+                usedWords.removeAll() // for new game - reset
                 rootWord = allWords.randomElement() ?? "silkworm" //default
                 return // return here if all if well
             }
